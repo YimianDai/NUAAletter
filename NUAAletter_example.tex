@@ -1,0 +1,169 @@
+% NUAAletter_example.tex - an example latex file to illustrate NUAAletter.cls
+%
+% Template by Yimian Dai (yimian.dai@gmail.com).  Please feel free to send suggestions for changes; this template/cls is not exactly elegantly done!
+%
+% This template is designed to be easily modified so that it can be used by anyone at NUAA.  The Department/School and College are easily modified in this file.  There should be no need to directly alter the .cls file.
+
+\documentclass[12pt]{NUAAletter}
+\usepackage{fontawesome}
+\usepackage{fontspec} 
+\usepackage{tikz} 
+\usepackage{xcolor}
+  % Set up custom NUAA blue color
+  \definecolor{nuaablue}{RGB}{30, 50, 130}
+\usepackage{url}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+%
+% This section is just a bunch of busywork so that the second and following pages read ``Page X of Y''
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+%
+%
+%
+\setmainfont{[Cambria.ttf]}[BoldFont  = [CambriaBold.ttf], ItalicFont  = [CambriaItalic.ttf], BoldItalicFont = [CambriaBoldItalic.ttf] ]
+%
+% The material below is a whole big dang thing whose purpose is just to set up a fixed coordinate system for \tikz so that you can put the Department or School address in the upper right-hand side without it moving all around every time you change something in the page.  I think it works.
+% Defining a new coordinate system for the page:
+%
+% --------------------------
+% |(-1,1)    (0,1)    (1,1)|
+% |                        |
+% |(-1,0)    (0,0)    (1,0)|
+% |                        |
+% |(-1,-1)   (0,-1)  (1,-1)|
+% --------------------------
+\makeatletter
+\def\parsecomma#1,#2\endparsecomma{\def\page@x{#1}\def\page@y{#2}}
+\tikzdeclarecoordinatesystem{page}{
+    \parsecomma#1\endparsecomma
+    \pgfpointanchor{current page}{north east}
+    % Save the upper right corner
+    \pgf@xc=\pgf@x%
+    \pgf@yc=\pgf@y%
+    % save the lower left corner
+    \pgfpointanchor{current page}{south west}
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\pgf@y%
+    % Transform to the correct placement
+    \pgfmathparse{(\pgf@xc-\pgf@xb)/2.*\page@x+(\pgf@xc+\pgf@xb)/2.}
+    \expandafter\pgf@x\expandafter=\pgfmathresult pt
+    \pgfmathparse{(\pgf@yc-\pgf@yb)/2.*\page@y+(\pgf@yc+\pgf@yb)/2.}
+    \expandafter\pgf@y\expandafter=\pgfmathresult pt
+}
+\makeatother
+%
+%
+%%%%%%%%%%% Put Personal Information Here %%%%%%%%%%%
+%
+\def\name{Your Name}
+%
+% List your degree(s), licences, etc. here if you like.
+%\def\What{, Your degrees, etc.} 
+%
+% Set the name of your Department or School here
+% I honestly don't know why the negative spacing is necessary to get the alignment of the first line correct.  This must be a ``\tikz'' thing.
+%%%%%%%%%%%%%%%%%%  School or Department %%%%%%%%%%%%%%%
+
+\def\Position{\vspace*{.5\baselineskip}\textbf{\color{nuaablue}Chair for Machine Learning and Data Engineering}}
+
+\def\Title{\hspace{-1.2mm}\textbf{\color{nuaablue}Prof.~Dr.~\name}}
+
+
+% Set your preferred contact number here
+\def\TEL{
+\vspace*{.5\baselineskip}
+\textbf{Contact}\\
+{\color{nuaablue}Phone}: +86-12345678987}
+
+\def\Where{
+\vspace*{.5\baselineskip}
+\textbf{\color{nuaablue}
+College of Electronic and Information Engineering
+}} 
+
+%%%%%%%%%%%%  Additional Contact Information %%%%%%%%%%%
+
+% Set your preferred primary contact address here.
+\def\Address{29 Jiangjun Ave., Nanjing~211106, China} 
+\def\Email{{\color{nuaablue}e-mail}: your.name@nuaa.edu.cn}
+\def\Website{{\color{nuaablue}website}: \url{your.website}}
+
+%%%%%%%%%%%%%%%%%%%%%  Signature line  %%%%%%%%%%%%%%%%%%%%%
+%
+% Set your signature line here.
+% One can add a signature image in a PDF file using the following code; this requires a file called "signature_block.pdf" to be installed in the same folder as the .tex file.  The vertical spacing (\vspace) and the scaling will have to be adjusted to get things to look correct for your particular signature image. Alternatively, comment out the following line in favor of the one labeled "[[Alternate]]" if you want to sign a paper copy of the letter.
+%
+\signature{ 
+\vspace{-8mm}\includegraphics[scale=.2]{signature_block.pdf}\\\vspace{-0mm}
+\name}
+
+\def\newaddress{
+\Title\\
+\Position\\
+\TEL\\ 
+\Email\\ 
+\Website\\
+\Where\\ 
+\Address\\ 
+% \CityZip\\ 
+% \Country\\
+
+% \URL 
+}
+%
+%%%%%%%%%%%  DATE  %%%%%%%%%%%%%%%%%%%%%%%%%
+% If you want a date different from the current date, comment out the next line in favor of the line labeled "[[Alternate]]".  The ``\vspace{10mm}'' just moves the date down a tiny bit so it doesn't interfere with the header.  This can be adjusted to your preference.
+%
+\date{\vspace{10mm} \today}
+%\date{\vspace{10mm} 20 September 2020}  %[[Alternate]]
+
+\begin{document}
+%
+%
+%%%%%%%%  The "To" address goes here.
+%
+\begin{letter}{ 
+			   Professor XXXXXXXX XXXXX\\ 
+               Some University\\ 
+               Some Addresss\\ 
+               SomeTown, SomeState 					       				  		 ~~SomeZip
+               }
+% \begin{letter}{\vspace*{-\baselineskip}} %[[Alternate]]
+
+% This line sets up the return address to the right-side of the NUAA logo.  The location is set with absolute node addresses using ``\tikz''.  It can still be a bit fussy, and you may need to alter this a little to get things to look right.  The bit that changes the position are the numbers in parentheses ``at (14.2,2.7)''
+%
+\begin{tikzpicture}[remember picture,overlay,,every node/.style={anchor=center}]
+\node[text width=7cm] at (page cs:0.5,0.73){\small \newaddress};
+\end{tikzpicture} 
+
+% \begin{tikzpicture}[remember picture,overlay,,every node/.style={anchor=center}]
+% \node[text width=10cm] at (page cs:0.5,0.73){\small \newaddress};
+% \end{tikzpicture} 
+
+%%%%%%  The ``opening'' is just the methd of address you would like to use at the start of the letter.
+%
+\opening{Dear Professor XXXXX,}
+
+%%%%%%%%%% Body of letter   %%%%%%%%%%%%%%
+% The ``\lipsum[1-8]" command just fills the letter with 8 paragraphs of Latin for the purposes of filler.  Unless you really want to send filler Latin to someone, you will replace this command with actual text.  Do that here:
+%
+\lipsum[1-5]
+
+%%%%%%% ``closing'' sets the sign-off line.
+\closing{Sincerely,}
+
+% Comment out/in the lines below as necessary
+%\encl{If an enclosure is provided, let them know what it is.}
+
+%\ps{A postscript if that is a thing you do.}
+
+%\cc{Someone Who Cares (and is copied).}
+
+\end{letter}
+
+\end{document}

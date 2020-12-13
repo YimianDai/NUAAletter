@@ -1,0 +1,39 @@
+\documentclass[tikz, border=2pt]{standalone}
+\usepackage{verbatim}
+\begin{comment}
+\end{comment}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{%
+  >={Latex[width=2mm,length=2mm]},
+  % Specifications for style of nodes:
+  base/.style = {rectangle, rounded corners, draw=black,
+                 minimum width=3cm, minimum height=0.4cm,
+                 text centered, font=\sffamily},
+  activityStarts/.style = {base, fill=blue!30},
+  startstop/.style = {base, fill=red!30},
+  activityRuns/.style = {base, fill=green!30},
+  process/.style = {base, minimum width=0.5cm, fill=orange!15}                                       
+}
+
+\usetikzlibrary{backgrounds}
+
+%\tikzset{font={\fontsize{10pt}{18}\selectfont}}    
+\begin{document}    
+
+% \definecolor{pwconvcolor}{RGB}{246,194,187}
+
+\begin{tikzpicture}[node distance=1.3cm,
+    every node/.style={fill=white, font=\sffamily}, align=center] 
+    
+  \node (input)[] {\includegraphics[width=0.4\textwidth]{"./nuaa-logo-black"}}; 
+  % \node (rightofinput)[right of=input, node distance=13cm]{};    
+  % \node (zhname)[above of=rightofinput, node distance=.5cm]{\includegraphics[height=0.2\textwidth]{"./nuaa-jianqi"}};  
+
+  \node (engname)[right of=input, node distance=8cm]{\includegraphics[height=0.17\textwidth]{"./boldengname"}};
+
+\end{tikzpicture}
+
+\end{document}
